@@ -1,19 +1,21 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import {View, Text, TextInput, Button} from 'react-native';
+import Card from '../components/Card';
+import Colors from '../constants/colors';
+import Input from '../components/Input'
 
 const StartGameScreen = () =>{
     return <Wrapper>
-        <Text>Start a New Game!</Text>
-        <InputContainer>
+        <Title>Start a New Game!</Title>
+        <Card >
             <Title>Select a Number</Title>
-            <TextInput/>
-            <View>
-                <Button title='Reset' onPress={() =>{}}/>
-                <Button title='Confirm' onPress={() =>{}}/>
-
-            </View>
-        </InputContainer>
+            <Input/>
+            <ButtonContainer>
+                <ButtonBox><Button color={Colors.secondary} title='Reset' onPress={() =>{}}/></ButtonBox>
+                <ButtonBox><Button color={Colors.primary} title='Confirm' onPress={() =>{}}/></ButtonBox>
+            </ButtonContainer>
+        </Card>
     </Wrapper>
 }
 
@@ -23,10 +25,19 @@ const Wrapper = styled.View`
     align-items: center;
 `;
 const Title  = styled.Text`
-
+    font-size: 20px;
+    margin: 10px 0;
+    
 `;
-const InputContainer  = styled.View`
-
+const ButtonContainer  = styled.View`
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 15px;
 `;
+const ButtonBox = styled.View`
+    width: 100px;
+`;
+
 
 export default StartGameScreen;
