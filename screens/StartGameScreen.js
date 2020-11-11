@@ -1,22 +1,47 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {View, Text, TextInput, Button} from 'react-native';
+import {View, Text, Button, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Card from '../components/Card';
 import Colors from '../constants/colors';
-import Input from '../components/Input'
 
 const StartGameScreen = () =>{
-    return <Wrapper>
-        <Title>Start a New Game!</Title>
-        <Card >
-            <Title>Select a Number</Title>
-            <Input/>
-            <ButtonContainer>
-                <ButtonBox><Button color={Colors.secondary} title='Reset' onPress={() =>{}}/></ButtonBox>
-                <ButtonBox><Button color={Colors.primary} title='Confirm' onPress={() =>{}}/></ButtonBox>
-            </ButtonContainer>
-        </Card>
-    </Wrapper>
+    const [enteredValue, setEnteredValue] = React.useState('');
+    const [confirmed, setConfirmed] = React.useState(false);
+    const [selectedNumber, setSelectedNumber] = React.useState();
+
+    const inputHandler = (input) =>{
+        setEnteredValue(input.replace(/[^0-9]/g, ''));
+    }
+    const resetInputHandler = () =>{
+        setEnteredValue('');
+        setConfirmed(false);
+    }
+    const confirmInputHandler = () =>{
+        const chosenNumber = parseInt(enteredValue);
+        if(chosenNumber===NaN || chosenNumber <= 0 || chosenNumber > 99){
+            return;
+        }
+        setConfirmed(true);
+        setSelectedNumber(chosenNumber);
+        setEnteredValue('');
+    }
+    return (
+    <TouchableWithoutFeedback onPress={() =>{
+        Keyboard.dismiss();
+    }}>
+        <Wrapper>
+            <Title>Start a New Game!</Title>
+            <Card >
+                <Title>Select a Number</Title>
+                <Input autoCapitalize='none' autoCorrect={false} blurOnSubmit keyboardType='number-pad' maxLength={2} onChangeText={(input) => inputHandler(input)} value={enteredValue}/>
+                <ButtonContainer>
+                    <ButtonBox><Button color={Colors.secondary} title='Reset' onPress={resetInputHandler}/></ButtonBox>
+                    <ButtonBox><Button color={Colors.primary} title='Confirm' onPress={confirmInputHandler}/></ButtonBox>
+                </ButtonContainer>
+            </Card>
+        </Wrapper>
+    </TouchableWithoutFeedback>
+    )
 }
 
 const Wrapper = styled.View`
@@ -37,6 +62,14 @@ const ButtonContainer  = styled.View`
 `;
 const ButtonBox = styled.View`
     width: 100px;
+`;
+const Input = styled.TextInput`
+    width: 50px;
+    height: 30px;
+    border-bottom-color: #eee;
+    border-bottom-width: 2px;
+    margin-vertical: 10px;
+    text-align: center;
 `;
 
 
